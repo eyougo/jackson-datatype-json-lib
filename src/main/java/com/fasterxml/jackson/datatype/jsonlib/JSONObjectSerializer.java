@@ -46,6 +46,12 @@ public class JSONObjectSerializer extends JSONBaseSerializer<JSONObject>
     public void serialize(JSONObject value, JsonGenerator jgen, SerializerProvider provider)
         throws IOException, JsonGenerationException
     {
+        if (value == null || JSONUtils.isNull(value)) {
+            if (provider.isEnabled(SerializationConfig.Feature.WRITE_NULL_MAP_VALUES)) {
+                jgen.writeNull();
+            }
+            return;
+        }
         jgen.writeStartObject();
         serializeContents(value, jgen, provider);
         jgen.writeEndObject();
@@ -56,6 +62,12 @@ public class JSONObjectSerializer extends JSONBaseSerializer<JSONObject>
             TypeSerializer typeSer)
         throws IOException, JsonGenerationException
     {
+        if (value == null || JSONUtils.isNull(value)) {
+            if (provider.isEnabled(SerializationConfig.Feature.WRITE_NULL_MAP_VALUES)) {
+                jgen.writeNull();
+            }
+            return;
+        }
         typeSer.writeTypePrefixForObject(value, jgen);
         serializeContents(value, jgen, provider);
         typeSer.writeTypeSuffixForObject(value, jgen);

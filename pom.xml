@@ -11,7 +11,7 @@
   <groupId>com.fasterxml.jackson.datatype</groupId>
   <artifactId>jackson-datatype-json-lib</artifactId>
   <name>Jackson-datatype-json-lib</name>
-  <version>1.9.2</version>
+  <version>1.9.3</version>
   <packaging>jar</packaging>
   <description>Support for datatypes of "net.sf.json" JSON library (see http://json-lib.sourceforge.net),
 mainly to make it easier to upgrade code to Jackson, using automated conversions.
