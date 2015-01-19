@@ -22,6 +22,7 @@ import java.util.Iterator;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONException;
+import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
 import net.sf.json.util.JSONUtils;
 
@@ -92,7 +93,10 @@ public class JSONObjectSerializer extends JSONBaseSerializer<JSONObject>
             } catch (JSONException e) {
                 throw new JsonGenerationException(e);
             }
-            if (ob == null || JSONUtils.isNull(ob)) {
+            // ob instanceof JSONNull
+            // JSONNull is a singleton class implements Serializable, but don't have "readResolve" method.
+            // So when serialize JSONNull object in Memcache, and deserializes it, it create a new JSONNull object, JSONUtil.isNull() can't judge this correctly.
+            if (ob == null || JSONUtils.isNull(ob) || ob instanceof JSONNull) {
                 if (provider.isEnabled(SerializationConfig.Feature.WRITE_NULL_MAP_VALUES)) {
                     jgen.writeNullField(key);
                 }

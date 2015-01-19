@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONNull;
 import net.sf.json.JSONObject;
 import net.sf.json.util.JSONUtils;
 
@@ -70,7 +71,10 @@ public class JSONArraySerializer extends JSONBaseSerializer<JSONArray>
     {
         for (int i = 0, len = value.size(); i < len; ++i) {
             Object ob = value.opt(i);
-            if (ob == null || JSONUtils.isNull(ob)) {
+            // ob instanceof JSONNull
+            // JSONNull is a singleton class implements Serializable, but don't have "readResolve" method.
+            // So when serialize JSONNull object in Memcache, and deserializes it, it create a new JSONNull object, JSONUtil.isNull() can't judge this correctly.
+            if (ob == null || JSONUtils.isNull(ob) || ob instanceof JSONNull) {
                 jgen.writeNull();
                 continue;
             }
